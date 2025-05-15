@@ -1,26 +1,32 @@
 import { Component } from '@angular/core';
-import { DarkThemeSelectorService } from '../switch-themes.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { headerList, HeaderList } from '../headerList';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  //#region Properties
   isOpen = false;
-  constructor(protected darkThemeSelectorService: DarkThemeSelectorService) {}
-  
+  headerList: HeaderList[] = [];
+  //#endregion
+
+  //#region Constructor
+  constructor() {
+    this.headerList = headerList.filter(item => item.isActive);
+  }
+  //#endregion
+
+  //#region Methods 
+
   toggleClick() {
     this.isOpen = !this.isOpen;
   }
   
-  toggleDarkMode() {
-    if(this.darkThemeSelectorService.currentTheme() === 'dark') {
-      this.darkThemeSelectorService.setLightTheme();
-    } else {
-      this.darkThemeSelectorService.setDarkTheme();
-    }
-  }
+  
+  //#endregion
 }
