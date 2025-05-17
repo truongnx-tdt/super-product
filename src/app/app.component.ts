@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CoreModule } from './core/core.module';
 import { LayoutModule } from './layout/layout.module';
-import { ThemeToggleComponent } from './shared/theme-toggle/theme-toggle.component';
+import { SettingsComponent } from './shared/settings/settings.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CoreModule, LayoutModule, ThemeToggleComponent],
+  imports: [RouterOutlet, CoreModule, LayoutModule, SettingsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

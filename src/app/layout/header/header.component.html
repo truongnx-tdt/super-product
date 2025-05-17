@@ -29,18 +29,23 @@
                 </li>
                 @for (item of headerList; track item.link) {
                 <li class="max-lg:border-b max-lg:border-gray-300 max-lg:py-3 px-3">
-                    <a [routerLink]='item.link' class="hover:text-blue-700 block font-medium text-[15px]">{{item.name}}</a>
+                    <a [routerLink]='item.link'
+                        class="hover:text-blue-700 block font-medium text-[15px]">{{translate(item.name.toLowerCase())}}</a>
                 </li>
                 }
+                <!-- Mobile Settings -->
+                <li class="max-lg:border-b max-lg:border-gray-300 max-lg:py-3 px-3 lg:hidden">
+                    <app-settings [showDirectSettings]="true"></app-settings>
+                </li>
             </ul>
         </div>
 
         <div class="flex max-lg:ml-auto space-x-4">
+            @if(!isLoggedIn) {
             <button [routerLink]='"/login"'
-                class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide border border-gray-400 bg-transparent hover:bg-gray-50 transition-all dark:hover:text-black">Login</button>
+                class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide border border-gray-400 bg-transparent hover:bg-gray-50 transition-all dark:hover:text-black">{{translate('login')}}</button>
             <button [routerLink]='"/signup"'
-                class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all">Sign
-                up</button>
+                class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all">{{translate('signup')}}</button>
 
             <button (click)="toggleClick()" class="lg:hidden cursor-pointer">
                 <svg class="w-7 h-7 dark:fill-white" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -49,6 +54,7 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </button>
+            }
         </div>
     </div>
 </header>

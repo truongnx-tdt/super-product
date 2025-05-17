@@ -13,15 +13,21 @@
 <body class="bg-white dark:bg-black">
   <app-root></app-root>
   <script>
-    const theme = localStorage.getItem('theme');
-    const browserDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (theme !== null) {
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
+    (function() {
+      try {
+        const theme = localStorage.getItem('theme');
+        const browserDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (theme !== null) {
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        } else if (browserDark) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {
+        // Handle SSR case - do nothing
       }
-    } else if (browserDark) {
-      document.documentElement.classList.add('dark');
-    }
+    })();
   </script>
 </body>
 
