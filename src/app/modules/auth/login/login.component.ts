@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { LanguageService } from '../../../core/services/language.service';
+import { GoogleIconComponent } from '../../../shared/icons';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleIconComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -14,7 +16,10 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   showPassword = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private languageService: LanguageService
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -22,6 +27,10 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]],
       remember: [false]
     });
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 
   togglePasswordVisibility() {

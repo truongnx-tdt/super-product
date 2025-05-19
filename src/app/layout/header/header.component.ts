@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { headerList, HeaderList } from '../headerList';
 import { SettingsComponent } from '../../shared/settings/settings.component';
 import { LanguageService } from '../../core/services/language.service';
+import { CloseIconComponent, MenuIconComponent } from '../../shared/icons';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, SettingsComponent],
+  imports: [CommonModule, RouterModule, SettingsComponent, CloseIconComponent, MenuIconComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
