@@ -7,7 +7,6 @@ import { GoogleIconComponent } from '../../../shared/icons';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleIconComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

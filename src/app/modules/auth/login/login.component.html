@@ -1,19 +1,22 @@
 <!-- component -->
-<div class="container px-4 mx-auto pt-20">
+<div class="container px-4 mx-auto pt-10">
   <div class="max-w-lg mx-auto">
-    <form class="border-2 border-indigo-900 rounded-lg p-6 shadow-lg" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="border-2 border-indigo-900 rounded-lg p-6 shadow-lg">
       <div class="text-center mb-4">
-        <h2 class="text-2xl font-extrabold">{{ translate('sign_in') }}</h2>
-      </div> 
-      <!-- Email/Username -->
+        <h2 class="text-2xl font-extrabold">{{ translate('login_title') }}</h2>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{{ translate('login_subtitle') }}</p>
+      </div>
+
+      <!-- Email -->
       <div class="mb-4">
-        <label class="block mb-1 font-bold text-sm" for="email">{{ translate('email_or_username') }}</label>
+        <label class="block mb-1 font-bold text-sm" for="email">{{ translate('email') }}</label>
         <input id="email"
-          class="inline-block w-full p-2 text-sm font-medium placeholder-indigo-900 bg-white shadow border-2 border-indigo-900 rounded dark:text-black dark:bg-gray-200"
-          type="text" placeholder="john.doe@example.com" formControlName="email">
+          class="inline-block w-full p-2 text-sm font-medium placeholder-indigo-900 bg-white shadow border-2 border-indigo-900 rounded dark:text-black"
+          type="email" placeholder="john.doe@example.com" formControlName="email">
         <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
           class="text-red-500 text-xs mt-1">
-          <div *ngIf="loginForm.get('email')?.errors?.['required']">{{ translate('email_required') }}</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['required']">{{ translate('email') }} is required</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</div>
         </div>
       </div>
 
@@ -22,7 +25,7 @@
         <label class="block mb-1 font-bold text-sm" for="password">{{ translate('password') }}</label>
         <div class="relative">
           <input id="password" [type]="showPassword ? 'text' : 'password'"
-            class="inline-block w-full p-2 text-sm font-medium placeholder-indigo-900 bg-white shadow border-2 border-indigo-900 rounded dark:text-black dark:bg-gray-200"
+            class="inline-block w-full p-2 text-sm font-medium placeholder-indigo-900 bg-white shadow border-2 border-indigo-900 rounded dark:text-black"
             placeholder="**********" formControlName="password">
           <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2"
             (click)="togglePasswordVisibility()">
@@ -32,18 +35,22 @@
         </div>
         <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
           class="text-red-500 text-xs mt-1">
-          <div *ngIf="loginForm.get('password')?.errors?.['required']">{{ translate('password_required') }}</div>
+          <div *ngIf="loginForm.get('password')?.errors?.['required']">{{ translate('password') }} is required</div>
         </div>
       </div>
 
       <!-- Remember Me & Forgot Password -->
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center">
-          <input type="checkbox" id="remember" formControlName="remember"
-            class="w-4 h-4 border-2 border-indigo-900 rounded focus:ring-indigo-500">
-          <label for="remember" class="ml-2 text-sm font-medium">{{ translate('remember_me') }}</label>
+          <input id="remember" type="checkbox" formControlName="remember"
+            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+          <label for="remember" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+            {{ translate('remember_me') }}
+          </label>
         </div>
-        <a href="#" class="text-sm text-indigo-800 hover:underline">{{ translate('forgot_password') }}</a>
+        <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">
+          {{ translate('forgot_password') }}
+        </a>
       </div>
 
       <button type="submit"
@@ -52,26 +59,35 @@
         {{ translate('sign_in') }}
       </button>
 
-      <div class="relative mb-3">
+      <div class="relative">
         <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-gray-300"></div>
+          <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
         </div>
-        <div class="relative flex justify-center text-xs">
-          <span class="px-2 bg-white dark:bg-black text-gray-500">{{ translate('continue_with') }}</span>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+            {{ translate('or') }}
+          </span>
         </div>
       </div>
 
       <div class="w-full flex justify-center mb-4">
         <button
-          class="flex items-center bg-white border border-gray-300 rounded shadow-md text-xs font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 py-2 px-4 w-full"
-          (click)="signInWithGoogle()" type="button">
-          <app-google-icon></app-google-icon>
-          <span>{{ translate('continue_with_google') }}</span>
+          type="button"
+          class="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          (click)="signInWithGoogle()">
+          <app-google-icon class="w-5 h-5 mr-2"></app-google-icon>
+          {{ translate('continue_with_google') }}
         </button>
       </div>
 
-      <p class="text-center text-sm font-bold">{{ translate('no_account') }} <a class="text-red-500 hover:underline"
-          [routerLink]="'/signup'">{{ translate('signup') }}</a></p>
+      <div class="text-center">
+        <p class="text-sm text-gray-600 dark:text-gray-300">
+          {{ translate('dont_have_account') }}
+          <a routerLink="/signup" class="font-medium text-blue-600 hover:text-blue-500">
+            {{ translate('signup') }}
+          </a>
+        </p>
+      </div>
     </form>
   </div>
 </div>

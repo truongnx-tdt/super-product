@@ -1,6 +1,12 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
+import { HomeComponent } from './modules/home/home.component';
+import { AboutComponent } from './modules/about/about.component';
+import { CoursesComponent } from './modules/courses/courses.component';
+import { CourseDetailComponent } from './modules/courses/course-detail/course-detail.component';
+import { LoginComponent } from './modules/auth/login/login.component';
+import { SignupComponent } from './modules/auth/signup/signup.component';
 
 export const routes: Routes = [
     {
@@ -9,7 +15,19 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent)
+                component: HomeComponent
+            },
+            {
+                path: 'about',
+                loadComponent: () => import('./modules/about/about.component').then(m => m.AboutComponent)
+            },
+            {
+                path: 'courses',
+                loadComponent: () => import('./modules/courses/courses.component').then(m => m.CoursesComponent)
+            },
+            {
+                path: 'courses/:id',
+                loadComponent: () => import('./modules/courses/course-detail/course-detail.component').then(m => m.CourseDetailComponent)
             }
         ]
     },

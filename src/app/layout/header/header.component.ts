@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { headerList, HeaderList } from '../headerList';
@@ -8,7 +8,6 @@ import { CloseIconComponent, MenuIconComponent } from '../../shared/icons';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [CommonModule, RouterModule, SettingsComponent, CloseIconComponent, MenuIconComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -18,15 +17,22 @@ export class HeaderComponent {
   isLoggedIn = false;
   isOpen = false;
   headerList: HeaderList[] = [];
+  isScrolled = false;
   //#endregion
 
   //#region Constructor
-  constructor(private languageService: LanguageService) {
+  constructor(
+    private languageService: LanguageService,
+  ) {
     this.headerList = headerList.filter(item => item.isActive);
   }
   //#endregion
 
   //#region Methods 
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 0;
+  }
 
   toggleClick() {
     this.isOpen = !this.isOpen;

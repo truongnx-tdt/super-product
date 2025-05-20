@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { GoogleIconComponent } from "../../../shared/icons";
+import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
   imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleIconComponent],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit {
   showConfirmPassword: boolean = false;
   private fb = inject(FormBuilder);
 
-  constructor() {}
+  constructor(private languageService: LanguageService) {}
 
   ngOnInit() {
     this.signupForm = this.fb.group({
@@ -31,6 +31,10 @@ export class SignupComponent implements OnInit {
     }, {
       validators: this.passwordMatchValidator
     });
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 
   passwordMatchValidator(form: FormGroup) {

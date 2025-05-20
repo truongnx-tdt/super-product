@@ -13,21 +13,27 @@ export const headerList: HeaderList[] = [
     isActive: true
   },
   {
-    name: 'Team',
-    link: '/team',
-    icon: 'team',   
+    name: 'Courses',
+    link: '/courses',
+    icon: 'courses',
     isActive: true
   },
   {
-    name: 'Feature',
-    link: '/feature',
-    icon: 'feature',
+    name: 'Teachers',
+    link: '/teachers',
+    icon: 'teachers',
     isActive: true
   },
   {
-    name: 'Blog',
-    link: '/blog',
-    icon: 'blog',
-    isActive: false
+    name: 'Resources',
+    link: '/resources',
+    icon: 'resources',
+    isActive: true
+  },
+  {
+    name: 'About',
+    link: '/about',
+    icon: 'about',
+    isActive: true
   }
 ]

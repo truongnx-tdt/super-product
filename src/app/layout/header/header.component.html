@@ -1,10 +1,14 @@
 <header
-    class="flex shadow-md py-4 px-4 sm:px-10 bg-white min-h-[70px] tracking-wide relative z-50 w-full sm:w-[90%] mx-auto rounded-lg dark:bg-gray-900 dark:text-white">
+    [ngClass]="{'shadow-lg': isScrolled}"
+    class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 py-4 px-4 sm:px-10 min-h-[70px] tracking-wide w-full sm:w-[90%] mx-auto rounded-lg dark:text-white transition-all duration-300">
     <div class="flex flex-wrap items-center justify-between gap-5 w-full">
-        <a href="javascript:void(0)" class="max-sm:hidden dark:max-sm:hidden"><img
-                src="https://readymadeui.com/readymadeui.svg" alt="logo" class="w-36" /></a>
-        <a href="javascript:void(0)" class="hidden max-sm:block"><img
-                src="https://readymadeui.com/readymadeui-short.svg" alt="logo" class="w-9" /></a>
+        <a href="/" class="flex items-center gap-2 max-lg:hidden">
+            <img src="assets/images/logo.svg" alt="EduPlatform Logo" class="w-10 h-10" />
+            <span class="text-xl font-bold text-blue-600 dark:text-blue-400">EduPlatform</span>
+        </a>
+        <a href="/" class="flex items-center gap-2 max-lg:block lg:hidden">
+            <img src="assets/images/logo.svg" alt="EduPlatform Logo" class="w-10 h-10" />
+        </a>
         <div id="collapseMenu" [ngClass]="{'max-lg:hidden': !isOpen,'max-lg:block': isOpen}"
             class="transition-all duration-300 ease-in-out lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 dark:max-lg:before:bg-white dark:max-lg:before:opacity-10">
             <button (click)="toggleClick()"
@@ -13,16 +17,11 @@
             </button>
 
             <ul
-                class="lg:flex gap-x-4 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50 dark:max-lg:bg-gray-800 dark:text-white">
-                <li class="mb-6 hidden max-lg:block">
-                    <a href="javascript:void(0)"><img src="https://readymadeui.com/readymadeui.svg" alt="logo"
-                            class="w-36" />
-                    </a>
-                </li>
+                class="lg:flex gap-x-6 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50 dark:max-lg:bg-gray-800 dark:text-white">
                 @for (item of headerList; track item.link) {
                 <li class="max-lg:border-b max-lg:border-gray-300 max-lg:py-3 px-3">
                     <a [routerLink]='item.link'
-                        class="hover:text-blue-700 block font-medium text-[15px]">{{translate(item.name.toLowerCase())}}</a>
+                        class="hover:text-blue-600 dark:hover:text-blue-400 block font-medium text-[15px] transition-colors duration-200">{{translate(item.name.toLowerCase())}}</a>
                 </li>
                 }
                 <!-- Mobile Settings -->
@@ -35,7 +34,7 @@
         <div class="flex max-lg:ml-auto space-x-4">
             @if(!isLoggedIn) {
             <button [routerLink]='"/login"'
-                class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide border border-gray-400 bg-transparent hover:bg-gray-50 transition-all dark:hover:text-black">{{translate('login')}}</button>
+                class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide border border-blue-600 text-blue-600 hover:bg-blue-50 transition-all dark:hover:bg-blue-900/20">{{translate('login')}}</button>
             <button [routerLink]='"/signup"'
                 class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all">{{translate('signup')}}</button>
 
@@ -46,3 +45,6 @@
         </div>
     </div>
 </header>
+
+<!-- Add spacer to prevent content from being hidden under fixed header -->
+<div class="h-16"></div>

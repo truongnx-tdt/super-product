@@ -6,6 +6,13 @@
         <h2 class="text-2xl font-extrabold">Create Account</h2>
       </div>
 
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        {{ translate('signup_title') }}
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
+        {{ translate('signup_subtitle') }}
+      </p>
+
       <!-- Full Name -->
       <div class="mb-4">
         <label class="block mb-1 font-bold text-sm" for="fullName">Full Name</label>
@@ -108,32 +115,54 @@
         </div>
       </div>
 
+      <div class="flex items-center">
+        <input
+          id="terms"
+          name="terms"
+          type="checkbox"
+          required
+          class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        >
+        <label for="terms" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+          {{ translate('agree_terms') }}
+        </label>
+      </div>
+
       <button type="submit"
         class="inline-block w-full py-2 px-4 mb-3 text-center text-sm font-bold text-white bg-indigo-800 hover:bg-indigo-900 border-2 border-indigo-900 rounded transition duration-200"
         [disabled]="!signupForm.valid">
-        Create Account
+        {{ translate('create_account') }}
       </button>
 
-      <div class="relative mb-3">
+      <div class="relative">
         <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-gray-300"></div>
+          <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
         </div>
-        <div class="relative flex justify-center text-xs">
-          <span class="px-2 bg-white dark:bg-black text-gray-500">Or continue with</span>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+            {{ translate('or') }}
+          </span>
         </div>
       </div>
 
       <div class="w-full flex justify-center mb-4">
         <button
-          class="flex items-center bg-white border border-gray-300 rounded shadow-md text-xs font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 py-2 px-4 w-full"
-          (click)="signInWithGoogle()" type="button">
-          <app-google-icon></app-google-icon>
-          <span>Continue with Google</span>
+          type="button"
+          class="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          (click)="signInWithGoogle()">
+          <app-google-icon class="w-5 h-5 mr-2"></app-google-icon>
+          {{ translate('continue_with_google') }}
         </button>
       </div>
 
-      <p class="text-center text-sm font-bold">Already have an account? <a class="text-red-500 hover:underline"
-          [routerLink]="'/login'">Sign in</a></p>
+      <div class="text-center">
+        <p class="text-sm text-gray-600 dark:text-gray-300">
+          {{ translate('already_have_account') }}
+          <a routerLink="/login" class="font-medium text-blue-600 hover:text-blue-500">
+            {{ translate('login') }}
+          </a>
+        </p>
+      </div>
     </form>
   </div>
 </div>
