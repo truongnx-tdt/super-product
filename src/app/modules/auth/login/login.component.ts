@@ -41,6 +41,11 @@ export class LoginComponent implements OnInit {
     console.log('Google Sign-In clicked');
   }
 
+  signInWithFacebook() {
+    // TODO: Implement Facebook Sign-In
+    console.log('Facebook Sign-In clicked');
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Form submitted:', this.loginForm.value);
