@@ -1,6 +1,10 @@
 <!-- component -->
 <div class="container px-4 mx-auto pt-10">
   <div class="max-w-lg mx-auto">
+    <!-- Mobile Settings Button -->
+    <div class="lg:hidden flex justify-end mb-4">
+      <app-settings [showDirectSettings]="false"></app-settings>
+    </div>
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="border-2 border-indigo-900 rounded-lg p-6 shadow-lg">
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
         {{ translate('signup_title') }}

@@ -4,10 +4,18 @@ import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { GoogleIconComponent } from "../../../shared/icons";
 import { LanguageService } from '../../../core/services/language.service';
+import { SettingsComponent } from '../../../shared/settings/settings.component';
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleIconComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    GoogleIconComponent,
+    SettingsComponent
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
