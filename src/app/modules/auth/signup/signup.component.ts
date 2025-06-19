@@ -8,7 +8,6 @@ import { SettingsComponent } from '../../../shared/settings/settings.component';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

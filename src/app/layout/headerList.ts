@@ -13,21 +13,9 @@ export const headerList: HeaderList[] = [
     isActive: true
   },
   {
-    name: 'Courses',
-    link: '/courses',
-    icon: 'courses',
-    isActive: true
-  },
-  {
-    name: 'Teachers',
-    link: '/teachers',
-    icon: 'teachers',
-    isActive: true
-  },
-  {
-    name: 'Resources',
-    link: '/resources',
-    icon: 'resources',
+    name: 'Veo3',
+    link: '/veo3',
+    icon: 'veo3',
     isActive: true
   },
   {

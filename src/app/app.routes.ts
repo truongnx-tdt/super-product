@@ -1,42 +1,36 @@
 import { Routes } from '@angular/router';
-import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-import { HomeComponent } from './modules/home/home.component';
+import { RouteConstants } from './core/models/common';
 
 export const routes: Routes = [
     {
-        path: '',
-        component: MainLayoutComponent,
+        path: 'auth',
+        loadComponent: () => import('./layout/auth-layout/auth-layout.component').then(m => m.AuthLayoutComponent),
         children: [
             {
-                path: '',
-                component: HomeComponent
+                path: RouteConstants.LOGIN,
+                loadComponent: () => import('./modules/auth/login/login.component').then(m => m.LoginComponent)
             },
             {
-                path: 'about',
-                loadComponent: () => import('./modules/about/about.component').then(m => m.AboutComponent)
-            },
-            {
-                path: 'courses',
-                loadComponent: () => import('./modules/courses/courses.component').then(m => m.CoursesComponent)
-            },
-            {
-                path: 'courses/:id',
-                loadComponent: () => import('./modules/courses/course-detail/course-detail.component').then(m => m.CourseDetailComponent)
+                path: RouteConstants.SIGNUP,
+                loadComponent: () => import('./modules/auth/signup/signup.component').then(m => m.SignupComponent)
             }
         ]
     },
     {
-        path: '',
-        component: AuthLayoutComponent,
+        path: RouteConstants.EMPTY,
+        loadComponent: () => import('./layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
         children: [
             {
-                path: 'login',
-                loadComponent: () => import('./modules/auth/login/login.component').then(m => m.LoginComponent)
+                path: RouteConstants.HOME,
+                loadComponent: () => import('./modules/home/home.component').then(m => m.HomeComponent)
             },
             {
-                path: 'signup',
-                loadComponent: () => import('./modules/auth/signup/signup.component').then(m => m.SignupComponent)
+                path: RouteConstants.ABOUT,
+                loadComponent: () => import('./modules/about/about.component').then(m => m.AboutComponent)
+            },
+            {
+                path: '**',
+                loadComponent: () => import('./modules/errors/not-found/not-found.component').then(m => m.NotFoundComponent)
             }
         ]
     }

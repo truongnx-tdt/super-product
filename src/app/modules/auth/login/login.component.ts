@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -22,16 +22,18 @@ import { SettingsComponent } from '../../../shared/settings/settings.component';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   showPassword = false;
+  passwordPattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/; // At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
 
   constructor(
     private fb: FormBuilder,
     private languageService: LanguageService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern(this.passwordPattern)]],
       remember: [false]
     });
   }

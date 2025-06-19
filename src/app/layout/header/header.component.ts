@@ -1,14 +1,22 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { headerList, HeaderList } from '../headerList';
 import { SettingsComponent } from '../../shared/settings/settings.component';
 import { LanguageService } from '../../core/services/language.service';
 import { CloseIconComponent, MenuIconComponent } from '../../shared/icons';
+import { FileService } from '../../core/services/file.service';
+
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule, SettingsComponent, CloseIconComponent, MenuIconComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SettingsComponent,
+    CloseIconComponent,
+    MenuIconComponent
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -19,6 +27,7 @@ export class HeaderComponent {
   headerList: HeaderList[] = [];
   isScrolled = false;
   //#endregion
+
 
   //#region Constructor
   constructor(
@@ -37,10 +46,10 @@ export class HeaderComponent {
   toggleClick() {
     this.isOpen = !this.isOpen;
   }
-  
+
   translate(key: string): string {
     return this.languageService.translate(key);
   }
-  
+
   //#endregion
 }
