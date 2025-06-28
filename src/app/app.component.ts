@@ -6,6 +6,7 @@ import { NotificationComponent } from "./shared/notification/notification.compon
 import { HeadService } from './core/services/head.service';
 import { Event, RouterEvent, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthService } from './modules/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +37,6 @@ export class AppComponent {
         default:
           break;
       }
-
     });
   }
 }
