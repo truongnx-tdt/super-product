@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { ApiResponse } from '../../core/models/api-response';
-import { environment } from '../../../environments/environment';
+import { User } from '../user/user.model';
+import { LoaderService } from '../../shared/spinner/loader.service';
+import { Router } from '@angular/router';
 
 interface LoginRequest {
   username: string;
@@ -14,22 +16,104 @@ interface LoginRequest {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiDomain = environment.authDomain;
-  constructor(private http: HttpClient) { }
+  // inject
+  private router = inject(Router);
+  private loader = inject(LoaderService);
+  private http = inject(HttpClient);
 
-  login(req: LoginRequest): Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(`/login`, (req));
+  // Angular 19 signals
+  private userSignal = signal<User | null>(null);
+  private isInitializedSignal = signal<boolean>(false);
+
+  // Computed signals
+  readonly user = this.userSignal.asReadonly();
+  readonly isAuthenticated = computed(() => this.userSignal() !== null);
+  readonly isLoading = this.loader.isLoading;
+  readonly isInitialized = this.isInitializedSignal.asReadonly();
+
+  constructor(
+  ) {
+    // this.initializeAuth();
   }
 
-  loginWithGoogle(req: string): Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(`/google-login`, { req });
+  // 1. Initialize auth state
+  private initializeAuth(): void {
+    this.checkAuthStatus().subscribe();
   }
 
-  logout(): Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(`${this.apiDomain}/api/logout`, {});
+  // 2. Login method
+  login(credentials: LoginRequest): Observable<ApiResponse<User>> {
+
+    return this.http.post<ApiResponse<User>>('/login', credentials, {
+      withCredentials: true 
+    }).pipe(
+      tap(response => {
+        if (response.status === 200) {
+          this.userSignal.set(response?.data || null);
+        }
+      }),
+      catchError(error => {
+        this.clearAuth();
+        throw error;
+      }),
+    );
   }
 
-  logoutAll(): Observable<ApiResponse> {
-    return this.http.post<ApiResponse>(`${this.apiDomain}/api/logout-all`, {});
+  checkAuthStatus(): Observable<boolean> {
+    if (this.isLoading()) return of(this.isAuthenticated());
+
+    return this.http.get<ApiResponse<User>>('/tdt/auth/api/profile', {
+      withCredentials: true
+    }).pipe(
+      tap(response => {
+        if (response.status === 200) {
+          this.userSignal.set(response.data || null);
+        } else {
+          this.clearAuth();
+        }
+        this.isInitializedSignal.set(true);
+      }),
+      map(response => response.status === 200),
+      catchError(error => {
+        this.clearAuth();
+        this.isInitializedSignal.set(true);
+        return of(false);
+      }),
+    );
+  }
+
+  // 4. Logout
+  logout(): Observable<any> {
+    return this.http.post('/tdt/auth/api/logout', {}, {
+      withCredentials: true
+    }).pipe(
+      tap(() => {
+        this.clearAuth();
+        this.router.navigate(['/login']);
+      }),
+      catchError(error => {
+        // Dù lỗi vẫn clear local auth state
+        this.clearAuth();
+        this.router.navigate(['/login']);
+        return of(null);
+      }),
+    );
+  }
+  // Helper methods
+  private clearAuth(): void {
+    this.userSignal.set(null);
+  }
+
+  isLoggedIn(): boolean {
+    return this.isAuthenticated();
+  }
+
+  // Kiểm tra xem auth đã được initialize chưa
+  waitForInitialization(): Observable<boolean> {
+    if (this.isInitialized()) {
+      return of(this.isAuthenticated());
+    }
+
+    return this.checkAuthStatus();
   }
 }

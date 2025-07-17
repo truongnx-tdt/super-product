@@ -5,7 +5,7 @@ import { headerList, HeaderList } from '../headerList';
 import { SettingsComponent } from '../../shared/settings/settings.component';
 import { LanguageService } from '../../core/services/language.service';
 import { CloseIconComponent, MenuIconComponent } from '../../shared/icons';
-import { FileService } from '../../core/services/file.service';
+import { AuthService } from '../../modules/auth/auth.service';
 
 
 @Component({
@@ -22,13 +22,12 @@ import { FileService } from '../../core/services/file.service';
 })
 export class HeaderComponent {
   //#region Properties
-  isLoggedIn = false;
   isOpen = false;
   headerList: HeaderList[] = [];
   isScrolled = false;
   //#endregion
 
-
+  authService = inject(AuthService);
   //#region Constructor
   constructor(
     private languageService: LanguageService,
@@ -51,5 +50,8 @@ export class HeaderComponent {
     return this.languageService.translate(key);
   }
 
+  logout() {
+    this.authService.logout().subscribe();
+  }
   //#endregion
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { AuthService } from '../../modules/auth/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -10,6 +11,6 @@ import { FooterComponent } from '../footer/footer.component';
     <app-header></app-header>
     <router-outlet />
     <app-footer></app-footer>
-  `
+  `,
 })
 export class MainLayoutComponent {} 

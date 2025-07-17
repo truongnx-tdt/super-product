@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { RouteConstants } from './core/models/common';
+import { guestGuard } from './modules/auth/guest.guard';
 
 export const routes: Routes = [
     {
@@ -8,11 +9,13 @@ export const routes: Routes = [
         children: [
             {
                 path: RouteConstants.LOGIN,
-                loadComponent: () => import('./modules/auth/login/login.component').then(m => m.LoginComponent)
+                loadComponent: () => import('./modules/auth/login/login.component').then(m => m.LoginComponent),
+                // canActivate: [guestGuard]
             },
             {
                 path: RouteConstants.SIGNUP,
-                loadComponent: () => import('./modules/auth/signup/signup.component').then(m => m.SignupComponent)
+                loadComponent: () => import('./modules/auth/signup/signup.component').then(m => m.SignupComponent),
+                // canActivate: [guestGuard]
             }
         ]
     },

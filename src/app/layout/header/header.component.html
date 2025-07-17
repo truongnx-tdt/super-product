@@ -32,16 +32,21 @@
         </div>
 
         <div class="flex max-lg:ml-auto space-x-4">
-            @if(!isLoggedIn) {
+            @if (authService.isLoggedIn()) {
+            <span>Xin chào, {{ authService.user()?.name }}!</span>
+            <a routerLink="/dashboard">Dashboard</a>
+            <a routerLink="/profile">Profile</a>
+            <button (click)="logout()">Đăng xuất</button>
+            } @else {
             <button [routerLink]='"/auth/login"'
                 class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide border border-blue-600 text-blue-600 hover:bg-blue-50 transition-all dark:hover:bg-blue-900/20">{{translate('login')}}</button>
             <button [routerLink]='"/auth/signup"'
                 class="px-4 py-2 text-sm rounded-full font-medium cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all">{{translate('signup')}}</button>
+            }
 
             <button (click)="toggleClick()" class="lg:hidden cursor-pointer">
                 <app-menu-icon></app-menu-icon>
             </button>
-            }
         </div>
     </div>
 </header>

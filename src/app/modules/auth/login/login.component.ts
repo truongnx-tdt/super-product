@@ -9,6 +9,7 @@ import { GoogleIconComponent } from '../../../shared/icons';
 import { SettingsComponent } from '../../../shared/settings/settings.component';
 import { NotificationService } from '../../../shared/notification/notification.service';
 import { AuthService } from '../auth.service';
+import { StorageService } from '../../../core/services/storage.service';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
   private notiService = inject(NotificationService);
   private authService = inject(AuthService);
   private route = inject(Router);
+  private readonly storeService = inject(StorageService);
 
   constructor(
     private fb: FormBuilder,
@@ -56,19 +58,19 @@ export class LoginComponent implements OnInit {
 
   signInWithGoogle() {
     try {
-      this.authService.loginWithGoogle('xuantruong').subscribe({
-        next: (res) => {
-          if (res.status !== 200) {
-            this.notiService.error('noti', res.message);
-            return;
-          }
-          this.notiService.success('noti', res.message);
-          this.route.navigate(['/']);
-        },
-        error: (error) => {
-          this.notiService.error('noti', error);
-        }
-      });
+      // this.authService.loginWithGoogle('xuantruong').subscribe({
+      //   next: (res) => {
+      //     if (res.status !== 200) {
+      //       this.notiService.error('noti', res.message);
+      //       return;
+      //     }
+      //     this.notiService.success('noti', res.message);
+      //     this.route.navigate(['/']);
+      //   },
+      //   error: (error) => {
+      //     this.notiService.error('noti', error);
+      //   }
+      // });
     }
     catch (error) {
       this.notiService.error('noti', 'login_failed_message');
@@ -94,7 +96,7 @@ export class LoginComponent implements OnInit {
             this.route.navigate(['/']);
           },
           error: (error) => {
-            this.notiService.error('noti', error);
+            this.notiService.error('noti', 'login_failed_message');
           }
         });
       } catch (error) {

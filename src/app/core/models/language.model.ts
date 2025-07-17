@@ -1,18 +1,14 @@
 export interface Language {
-    id: number;
-    code: string;
+    id: string;
     name: string;
     flag: string;
     isActive: boolean;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
 export interface LanguageTranslation {
     id: number;
-    languageId: number;
+    languageCode: string;
     key: string;
     value: string;
-    createdAt: Date;
-    updatedAt: Date;
+    module: string;
 } 

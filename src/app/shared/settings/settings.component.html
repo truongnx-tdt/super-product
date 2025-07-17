@@ -14,7 +14,8 @@
             <span class="text-gray-700 dark:text-gray-200">{{ translate('dark_mode') }}</span>
             <div class="relative">
                 <div class="w-10 h-6 bg-gray-300 rounded-full dark:bg-blue-600"></div>
-                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-4">
+                <div
+                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-4">
                 </div>
             </div>
         </button>
@@ -23,16 +24,16 @@
     <!-- Language Selection -->
     <div>
         <div class="relative">
-            <select [ngModel]="getCurrentLanguage().code"
-                (ngModelChange)="setLanguage($event)"
+            <select [ngModel]="currentLanguage().id" (ngModelChange)="setLanguage($event)"
                 class="w-full p-3 pr-10 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg appearance-none cursor-pointer text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                @for (lang of languages; track lang.code) {
-                <option [value]="lang.code" class="flex items-center gap-2 py-2">
+                @for (lang of languages(); track lang.id) {
+                <option [value]="lang.id" class="flex items-center gap-2 py-2">
                     <span class="mr-2">{{ lang.flag }}</span> {{ lang.name }}
                 </option>
                 }
             </select>
-            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-700 dark:text-gray-200">
+            <div
+                class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-700 dark:text-gray-200">
                 <app-chevron-down-icon [width]="16" [height]="16"></app-chevron-down-icon>
             </div>
         </div>
@@ -40,8 +41,7 @@
 </div>
 
 <!-- Settings Modal -->
-<div *ngIf="isOpen() && !showDirectSettings"
-    class="fixed inset-0 z-50 flex justify-end">
+<div *ngIf="isOpen() && !showDirectSettings" class="fixed inset-0 z-50 flex justify-end">
     <div class="absolute inset-0 bg-gray-700 opacity-35 transition-opacity duration-300"></div>
     <div class="h-full w-80 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 translate-x-0"
         [class.translate-x-full]="!isOpen()">
@@ -61,35 +61,98 @@
                     <span class="text-gray-700 dark:text-gray-200">{{ translate('dark_mode') }}</span>
                     <div class="relative">
                         <div class="w-10 h-6 bg-gray-300 rounded-full dark:bg-blue-600"></div>
-                        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-4">
+                        <div
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-4">
                         </div>
                     </div>
                 </button>
             </div>
 
             <!-- Language Selection -->
-            <div>
-                <h3 class="text-lg font-medium mb-3 dark:text-white">{{ translate('language') }}</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ translate('language') }}
+                    </label>
+
+                    <!-- Refresh Button (show if cache is old) -->
+                    <button (click)="refreshLanguages()"
+                        [disabled]="isLoadingLanguages()"
+                        class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        [attr.aria-label]="translate('refresh_languages')">
+                        <span *ngIf="!isLoadingLanguages()">{{ translate('refresh') }}</span>
+                        <span *ngIf="isLoadingLanguages()" class="flex items-center gap-1">
+                            <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ translate('refreshing') }}
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Language Selector -->
                 <div class="relative">
-                    <select [ngModel]="getCurrentLanguage().code"
-                        (ngModelChange)="setLanguage($event)"
-                        class="w-full p-3 pr-10 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg appearance-none cursor-pointer text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        @for (lang of languages; track lang.code) {
-                        <option [value]="lang.code" class="flex items-center gap-2 py-2">
-                            <span class="mr-2">{{ lang.flag }}</span> {{ lang.name }}
+                    <!-- Loading State -->
+                    <div *ngIf="isLoadingLanguages() && !isReady()"
+                        class="w-full p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ translate('loading_languages') }}
+                        </div>
+                    </div>
+
+                    <!-- Language Select -->
+                    <select *ngIf="isReady() && languages().length > 0" [ngModel]="currentLanguage().id"
+                        (ngModelChange)="setLanguage($event)" [disabled]="isLoadingLanguages()"
+                        class="w-full p-3 pr-10 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg appearance-none cursor-pointer text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
+
+                        @for (lang of languages(); track lang.id) {
+                        <option [value]="lang.id" class="flex items-center gap-2 py-2">
+                            <span *ngIf="lang.flag" class="mr-2">{{ lang.flag }}</span>
+                            {{ lang.name }}
                         </option>
                         }
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-700 dark:text-gray-200">
+
+                    <!-- Dropdown Arrow -->
+                    <div *ngIf="isReady() && languages().length > 0"
+                        class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-700 dark:text-gray-200">
                         <app-chevron-down-icon [width]="16" [height]="16"></app-chevron-down-icon>
                     </div>
+
+                    <!-- Error State -->
+                    <div *ngIf="isReady() && languages().length === 0"
+                        class="w-full p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <div class="flex items-center gap-2 text-red-600 dark:text-red-400">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                            {{ translate('no_languages_available') }}
+                        </div>
+                    </div>
                 </div>
-                <!-- Selected Language Display -->
-                <div class="mt-3 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center gap-2">
-                    <span class="text-2xl">{{ getCurrentLanguage().flag }}</span>
-                    <span class="text-gray-700 dark:text-gray-200">{{ getCurrentLanguage().name }}</span>
+
+                <!-- Current Language Info -->
+                <div *ngIf="isReady()" class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <span>{{ translate('current_language') }}:</span>
+                    <span class="font-medium">{{ currentLanguage().name }}</span>
+                    <span *ngIf="currentLanguage().flag">{{ currentLanguage().flag }}</span>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>

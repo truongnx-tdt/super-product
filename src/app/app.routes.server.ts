@@ -4,7 +4,7 @@ import { RouteConstants } from './core/models/common';
 export const serverRoutes: ServerRoute[] = [
   {
     path: RouteConstants.EMPTY,
-    renderMode: RenderMode.Server
+    renderMode: RenderMode.Client
   },
   {
     path: 'auth/login',
